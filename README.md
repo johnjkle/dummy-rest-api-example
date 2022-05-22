@@ -65,7 +65,13 @@ faraday.request :retry, max: 2, interval: 45, retry_statuses: [429]
 
 It should be noted that any retry will add an additional 45 seconds to the overall execution but the test case should pass if the error is not encountered 3 times in a row.
 
-Additionally, the default behaviour of Faraday does not return too much information while tests are executing, so a "verbose" logger is set up in helpers/faraday.rb to return additional information such as the endpoint under test, status (only if != 200) and response body/response (in the case of a 429 for example), so that it's easier to follow the test execution in the terminal.
+Additionally, the default behaviour of Faraday does not return too much information while tests are executing, so a "verbose" logger is set up in helpers/faraday.rb to return additional information such as the endpoint under test, status (only if != 200) and response body/response (in the case of a 429 for example), so that it's easier to follow the test execution in the terminal. This returns more information about the requests/responses in the terminal:
+
+![image](https://user-images.githubusercontent.com/1628555/169704371-a1619667-c4b3-4bae-aaad-49abf6900b1d.png)
+
+Additionally, in the event of an HTTP 429 failure (which results in a retry), both the initial failed attempt and subsequent retries are captured (failed/succeeded as the case may be):
+
+![image](https://user-images.githubusercontent.com/1628555/169704436-0afae479-7c9f-4885-abf8-ab66c5e3b7c6.png)
 
 The dummy API requests are instantiated in helpers/dummy_rest_api.rb, removing the requests themselves from the actual test cases/spec. Though not as vital in a simple example such as this, as the framework and # of test cases grows, this allows us to modify request details (the route itself, payload, default values, etc) in a central location vs in numerous test cases. 
 
